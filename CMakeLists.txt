@@ -47,26 +47,40 @@ if(WITH_BOOST_TEST)
 endif()
 
 if(WITH_GTEST)
-    find_package(GTest REQUIRED)
-    add_executable(test_version_gtest test_version_gtest.cpp)
 
+    if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/googletest/CMakeLists.txt")
+        message(STATUS "Downloading googletest...")
+        execute_process(
+            COMMAND git clone --depth 1 https://github.com/google/googletest.git -b v1.13.0
+            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+            RESULT_VARIABLE result
+        )
+        if(NOT result EQUAL 0)
+            message(FATAL_ERROR "Failed to download googletest")
+        endif()
+    endif()
+    
+    add_subdirectory(googletest)
+    
+    message(STATUS "Google Test configured via add_subdirectory")
+    
+    add_executable(test_version_gtest test_version_gtest.cpp)
+    
     set_target_properties(test_version_gtest PROPERTIES
         CXX_STANDARD 14
         CXX_STANDARD_REQUIRED ON
     )
-
+    
     target_include_directories(test_version_gtest PRIVATE 
-        ${GTEST_INCLUDE_DIRS}
         ${CMAKE_CURRENT_SOURCE_DIR}
         ${CMAKE_BINARY_DIR}
     )
     
+    # Связываем с целями из googletest
     target_link_libraries(test_version_gtest PRIVATE 
-        ${GTEST_LIBRARIES}
-        ${GTEST_MAIN_LIBRARIES}
+        gtest_main
         helloworld
     )
-    
 endif()
 
 if (MSVC)
