@@ -51,7 +51,7 @@ if(WITH_GTEST)
     if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/googletest/CMakeLists.txt")
         message(STATUS "Downloading googletest...")
         execute_process(
-            COMMAND git clone --depth 1 https://github.com/google/googletest.git -b v1.13.0
+            COMMAND git clone --depth 1 https://github.com/google/googletest.git -b v1.17.0
             WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
             RESULT_VARIABLE result
         )
