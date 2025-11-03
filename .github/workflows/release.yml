@@ -14,8 +14,18 @@ jobs:
         with:
           submodules: true
       - run: sudo apt-get update && sudo apt-get install libboost-test-dev -y
-      - run: cmake . -DPATCH_VERSION=${{ github.run_number }} -DWITH_BOOST_TEST=ON
-      - run: cmake . -DPATCH_VERSION=${{ github.run_number }} -DWITH_GTEST_TEST=ON
+      #--------------
+      - run: sudo apt-get install -y build-essential cmake
+      # Добавляем установку GTest зависимостей
+      - run: sudo apt-get install -y libgtest-dev
+      - run: |
+          # Компилируем и устанавливаем GTest
+          cd /usr/src/gtest
+          sudo cmake CMakeLists.txt
+          sudo make
+          sudo cp lib/*.a /usr/lib
+      - run: cmake . -DPATCH_VERSION=${{ github.run_number }} -DWITH_BOOST_TEST=ON -DWITH_GTEST=ON 
+      #----------------------------
       - run: cmake --build .
       - run: cmake --build . --target test
       - run: cmake --build . --target package
