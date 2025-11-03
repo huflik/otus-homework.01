@@ -1,5 +1,4 @@
 #include "lib.h"
-#include "version.h"
 #include <gtest/gtest.h>
 
 TEST(VersionTest, TestValidVersion) {
