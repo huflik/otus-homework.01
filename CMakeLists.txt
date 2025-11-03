@@ -141,5 +141,5 @@ if(WITH_BOOST_TEST)
 endif()
 
 if(WITH_GTEST)
-    add_test(test_ip_filter test_ip_filter)
+    add_test(test_version_gtest test_version_gtest)
 endif()
