@@ -47,7 +47,7 @@ if(WITH_BOOST_TEST)
 endif()
 
 if(WITH_GTEST)
-    find_package(GTest)
+    find_package(GTest REQUIRED)
     add_executable(test_version_gtest test_version_gtest.cpp)
 
     set_target_properties(test_version_gtest PROPERTIES
@@ -55,9 +55,17 @@ if(WITH_GTEST)
         CXX_STANDARD_REQUIRED ON
     )
 
-    include_directories(${GTEST_INCLUDE_DIRS}) 
-
-    target_link_libraries(test_version_gtest gtest)
+    target_include_directories(test_version_gtest PRIVATE 
+        ${GTEST_INCLUDE_DIRS}
+        ${CMAKE_CURRENT_SOURCE_DIR}
+        ${CMAKE_BINARY_DIR}
+    )
+    
+    target_link_libraries(test_version_gtest PRIVATE 
+        ${GTEST_LIBRARIES}
+        ${GTEST_MAIN_LIBRARIES}
+        helloworld
+    )
     
 endif()
 
