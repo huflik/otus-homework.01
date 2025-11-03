@@ -55,10 +55,10 @@ if(WITH_GTEST)
         CXX_STANDARD_REQUIRED ON
     )
 
-    target_link_libraries(test_version_gtest
-        GTest::gtest_main
-        helloworld
-    )
+    include_directories(${GTEST_INCLUDE_DIRS}) 
+
+    target_link_libraries(test_version_gtest gtest)
+    
 endif()
 
 if (MSVC)
